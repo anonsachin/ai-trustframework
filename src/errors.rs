@@ -2,5 +2,6 @@
 #[derive(Debug)]
 pub enum ExecutionError {
     InvalidArgError(String),
-    ParseError(String)
+    ParseError(String),
+    FileError(String),
 }

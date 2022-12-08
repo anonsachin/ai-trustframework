@@ -1,14 +1,12 @@
-#[macro_use]
-extern crate serde_derive;
 
 use std::fs::read_to_string;
 use std::env::args;
 use serde_json;
-use crate::inputs::*;
-use crate::errors::*;
+use ai_trustframework::inputs::*;
+use ai_trustframework::errors::*;
+use ai_trustframework::output::*;
 
-pub mod inputs;
-pub mod errors;
+
 
 fn main() -> Result<(),ExecutionError> {
     match args().nth(1) {
@@ -26,7 +24,24 @@ fn main() -> Result<(),ExecutionError> {
                             match extract_inputs(input) {
                                 Ok(inputs) => {
                                     println!("{:?}",inputs);
-                                    Ok(())
+                                    // Creating the output json
+                                    let data = match output_json_string(6, &inputs.directory, "white.png") {
+                                        Ok(data) => {
+                                            data
+                                        }
+                                        Err(err) => {
+                                            return Err(err);
+                                        }
+                                    };
+                                    // writing it out to file
+                                    match create_and_write_bytes_to_file(data.as_bytes(), &inputs.directory, "output.json"){
+                                        Ok(()) => {
+                                            Ok(())
+                                        }
+                                        Err(err) => {
+                                            Err(ExecutionError::FileError(err))
+                                        }
+                                    }
                                 }
                                 Err(err) =>{ Err(err) }
                             }

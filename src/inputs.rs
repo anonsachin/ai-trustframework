@@ -1,3 +1,4 @@
+#![cfg_attr(debug_assertions, allow(unused_imports))] // added to remove warnings on Deserialize, Serialize
 use crate::errors::*;
 use serde::{Deserialize, Serialize};
 
