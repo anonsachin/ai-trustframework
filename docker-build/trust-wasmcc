@@ -1,0 +1,16 @@
+# External build of chaincode
+
+ARG GO_VER=1.19.4
+ARG ALPINE_VER=3.17
+
+FROM golang:${GO_VER}-alpine${ALPINE_VER}
+
+WORKDIR /go/src/github.com/ai-trustframework/wasmcc
+COPY . ./cmd/trustcc-wasm
+COPY . ../pkg
+
+
+RUN go install cmd/trustcc-wasm
+
+EXPOSE 7054
+CMD ["trustcc-wasm"]
