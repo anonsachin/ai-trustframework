@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+        build-artifacts:
+            container_name: build-artifacts
+            image: hyperledger/fabric-tools:2.2.4
+            tty: true
+            stdin_open: true
+            environment:
+                - GOPATH=/opt/gopath
+                - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+            command: ./artifacts.sh
+            volumes:
+                - /var/run/:/host/var/run/
+                - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+                - ./certs:/opt/gopath/src/github.com/hyperledger/fabric/peer/certs
+                - ./artifacts.sh:/opt/gopath/src/github.com/hyperledger/fabric/peer/artifacts.sh
+                - ./configtx.yaml:/opt/gopath/src/github.com/hyperledger/fabric/peer/configtx.yaml
