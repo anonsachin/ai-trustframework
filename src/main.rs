@@ -3,8 +3,12 @@ extern crate serde_derive;
 
 use std::fs::read_to_string;
 use std::env::args;
-use serde::{Deserialize, Serialize};
 use serde_json;
+use crate::inputs::*;
+use crate::errors::*;
+
+pub mod inputs;
+pub mod errors;
 
 fn main() -> Result<(),ExecutionError> {
     match args().nth(1) {
@@ -44,54 +48,6 @@ fn main() -> Result<(),ExecutionError> {
     }
 }
 
-// The error values
-#[derive(Debug)]
-enum ExecutionError {
-    InvalidArgError(String),
-    ParseError(String)
-}
 
 
-#[derive(Debug,Deserialize,Serialize)]
-struct Inputs {
-    image: String,
-    directory: String
-}
 
-fn extract_inputs(values: serde_json::Value) -> Result<Inputs, ExecutionError> {
-    // Initialize empty inputs
-    let mut input = Inputs{
-        directory: "".to_string(),
-        image: "".to_string()
-    };
-
-    // Getting the image location
-    let image = values["image"].to_owned();
-    match image {
-         serde_json::Value::String(location) => {
-            input.image = location;
-         }
-        serde_json::Value::Null => {
-          return  Err(ExecutionError::ParseError("Unable to get image feild.".to_string()));
-        }
-        _ => {
-            return  Err(ExecutionError::ParseError("Unexpected value type for image feild, expecting string.".to_string()));
-          }
-    }
-
-    // Getting the image location
-    let dir = values["output_directory"].to_owned();
-    match dir {
-         serde_json::Value::String(location) => {
-            input.directory = location;
-         }
-        serde_json::Value::Null => {
-          return  Err(ExecutionError::ParseError("Unable to get output_directory feild.".to_string()));
-        }
-        _ => {
-            return  Err(ExecutionError::ParseError("Unexpected value type for output_directory feild, expecting string.".to_string()));
-          }
-    }
-
-    Ok(input)
-}
