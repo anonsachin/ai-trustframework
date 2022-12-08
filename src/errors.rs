@@ -4,4 +4,6 @@ pub enum ExecutionError {
     InvalidArgError(String),
     ParseError(String),
     FileError(String),
+    ImageExtractionError(String),
+    ImageError(String)
 }

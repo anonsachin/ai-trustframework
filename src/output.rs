@@ -1,6 +1,7 @@
 use std::{fs::File, io::Write};
 
 use crate::errors::ExecutionError;
+use image;
 use serde_json::{json, to_string};
 
 
@@ -38,5 +39,16 @@ pub fn create_and_write_bytes_to_file (data: &[u8], output_directory: &str, outp
         Err(err) => {
             Err(err.to_string())
         }
+    }
+}
+
+pub fn save_grey_image_to_location(img: image::GrayImage,location: &str) -> Result<(),ExecutionError> {
+    match img.save(location) {
+      Ok(_) => {
+        Ok(())
+      }
+      Err(err) => {
+        Err(ExecutionError::ImageError(err.to_string()))
+      }
     }
 }

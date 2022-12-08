@@ -33,10 +33,29 @@ fn main() -> Result<(),ExecutionError> {
                                             return Err(err);
                                         }
                                     };
+
+                                    let white_data = generate_max_u8s(784);
+                                    let white_gray_image = match gray_png_image_from_bytes(white_data,28,28) {
+                                        Ok(img) => {
+                                            img
+                                        },
+                                        Err(err) => {
+                                            return  Err(err);
+                                        }
+                                    };
+
                                     // writing it out to file
                                     match create_and_write_bytes_to_file(data.as_bytes(), &inputs.directory, "output.json"){
                                         Ok(()) => {
-                                            Ok(())
+                                            //save image to output directory and white.png
+                                            match save_grey_image_to_location(white_gray_image, format!("{}/{}",inputs.directory,"white.png").as_str()){
+                                                Ok(_) => {
+                                                    Ok(())
+                                                },
+                                                Err(err) => {
+                                                    return Err(err);
+                                                }
+                                            }
                                         }
                                         Err(err) => {
                                             Err(ExecutionError::FileError(err))
