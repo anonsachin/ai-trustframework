@@ -6,11 +6,14 @@ ARG ALPINE_VER=3.17
 FROM golang:${GO_VER}-alpine${ALPINE_VER}
 
 WORKDIR /go/src/github.com/ai-trustframework/wasmcc
-COPY . ./cmd/trustcc-wasm
-COPY . ../pkg
+COPY cmd/trustcc-wasm/ cmd/trustcc-wasm/
+COPY pkg/ pkg/
+COPY go.mod .
+COPY go.sum .
+COPY vendor/ vendor/
 
-
-RUN go install cmd/trustcc-wasm
+RUN ls -al
+RUN go install ./cmd/trustcc-wasm
 
 EXPOSE 7054
 CMD ["trustcc-wasm"]

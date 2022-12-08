@@ -17,6 +17,7 @@ type TrustWASMCC struct{
 func NewTrustWASMCC (log *logrus.Entry) *TrustWASMCC {
 	return &TrustWASMCC{
 		log: log,
+		regisrty: make(ActionsRegistry),
 	}
 }
 
