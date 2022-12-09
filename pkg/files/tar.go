@@ -67,15 +67,20 @@ func copyFileToTar(tar_writer *tar.Writer, filename string) error {
 	}
 
 	// copy the file
-	_, err = io.Copy(tar_writer,file)
-	if err != nil {
-		return err
+	if !info.IsDir() {
+		_, err = io.Copy(tar_writer,file)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
 // Untar will take a source tar and untar into the destination
+// currently buggy untar, it is not able to untar, if all folder structres are not
+// added before hand :- "test/input","test/input/test.txt"
+// just :- "test/input/test.txt" will through an error during untar
 func Untar(source, destination string) error {
 	// open source
 	src, err := os.Open(source)
@@ -114,9 +119,15 @@ func Untar(source, destination string) error {
 		// based on the type of object take the right steps
 		switch header.Typeflag {
 		case tar.TypeDir:
-			CreateDir(destination_path)
+			err := CreateDir(destination_path)
+			if err != nil {
+				return err
+			}
 		case tar.TypeReg:
-			CopyToNewFile(tar_reader,destination_path,header.Mode)
+			err := CopyToNewFile(tar_reader,destination_path,header.Mode)
+			if err != nil {
+				return err
+			}
 		}
 	}
 }
