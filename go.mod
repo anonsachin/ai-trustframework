@@ -6,6 +6,7 @@ require github.com/hyperledger/fabric-protos-go v0.3.0
 
 require (
 	github.com/btcsuite/btcd v0.20.1-beta // indirect
+	github.com/bytecodealliance/wasmtime-go v1.0.0 // indirect
 	github.com/crackcomm/go-gitignore v0.0.0-20170627025303-887ab5e44cc3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
