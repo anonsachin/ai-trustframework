@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
-	// "time"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -27,11 +27,11 @@ func TestIPFSIntegration(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.Name,func(t *testing.T) {
-		// 	defer runMakeCommand(t,"ipfs-down")
-			
-		// 	time.Sleep(20*time.Second)
+			defer runMakeCommand(t,"ipfs-down")
 
-		// 	runMakeCommand(t,"ipfs-up")
+			runMakeCommand(t,"ipfs-up")
+			
+			time.Sleep(10*time.Second)
 
 			shell := ipfs.NewShell("localhost:5001",logrus.NewEntry(logrus.StandardLogger()))
 
