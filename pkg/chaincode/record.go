@@ -1,6 +1,9 @@
 package chaincode
 
-import "ai-trustframework/pkg/merkele"
+import (
+	sig"ai-trustframework/pkg/lamportsig"
+	"ai-trustframework/pkg/merkele"
+)
 
 type RecordOfExecutionOld struct {
 	prediction interface{} // The ouput only
@@ -43,4 +46,15 @@ type RecordOfExecutionV5 struct {
 	OutputArchive string // hash of ouput
 	ExecutionArchive string // hash of execution state
 	Merkele *merkele.Merkele //merkel tree of the elements
+}
+
+type RecordOfExecution struct {
+	Prediction interface{} // The ouput only
+	Explanation string // hash of explanation
+	Model string // hash of model
+	InputArchive string // hash of input
+	OutputArchive string // hash of ouput
+	ExecutionArchive string // hash of execution state
+	Merkele *merkele.Merkele //merkel tree of the elements
+	Signature *sig.LamportSignature //signature and public key 
 }
